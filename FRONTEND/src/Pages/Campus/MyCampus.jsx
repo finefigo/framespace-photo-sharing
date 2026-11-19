@@ -8,7 +8,7 @@ function MyCampus() {
       imageType="CAMPUS"
       eyebrow="Places & spaces"
       title="Explore the campus"
-      description="Walk through the landmarks, quiet corners, and everyday spaces that shape life at NIT Durgapur."
+      description="Walk through the landmarks, quiet corners, and everyday spaces that shape life at JIS College Of Engineering."
       nameField="placeName"
     />
   )

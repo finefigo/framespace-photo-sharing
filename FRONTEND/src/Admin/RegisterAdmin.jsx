@@ -30,8 +30,9 @@ function RegisterAdmin() {
       toast.error("Please enter a valid 10-digit mobile number")
       return
     }
-    if (!signUpState.email.includes("@") || !signUpState.email.toLowerCase().includes("nitdgp")) {
-      toast.error("Please enter a valid NIT Durgapur email")
+    const emailLower = signUpState.email.toLowerCase()
+    if (!emailLower.includes("@") || (!emailLower.includes("jis") && !emailLower.includes("nitdgp"))) {
+      toast.error("Please enter a valid JIS College Of Engineering email")
       return
     }
 

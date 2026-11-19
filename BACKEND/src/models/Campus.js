@@ -1,9 +1,9 @@
-const mongoose = require("mongoose")
-const imageSchema = require("./imageFields")
+const { createGalleryModel } = require("./createGalleryModel")
 
-const campusSchema = new mongoose.Schema({
-  placeName: { type: String, required: true, unique: true, trim: true },
-  image: { type: [imageSchema], default: [] },
-}, { timestamps: true })
+const Campus = createGalleryModel({
+  tableName: "campus",
+  nameField: "placeName",
+  isEvent: false,
+})
 
-module.exports = mongoose.models.Campus || mongoose.model("Campus", campusSchema)
+module.exports = Campus

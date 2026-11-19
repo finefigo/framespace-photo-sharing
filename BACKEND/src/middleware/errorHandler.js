@@ -17,11 +17,11 @@ function errorHandler(error, req, res, next) {
 
   if (error.name === "ValidationError") {
     statusCode = 400
-    message = Object.values(error.errors).map((item) => item.message).join(", ")
+    message = Object.values(error.errors || {}).map((item) => item.message).join(", ")
   }
-  if (error.code === 11000) {
+  if (error.code === 11000 || error.code === "ER_DUP_ENTRY" || error.errno === 1062) {
     statusCode = 409
-    message = `${Object.keys(error.keyPattern || {})[0] || "Record"} already exists`
+    message = error.sqlMessage || "A record with this unique information already exists"
   }
   if (error instanceof multer.MulterError) {
     statusCode = 400

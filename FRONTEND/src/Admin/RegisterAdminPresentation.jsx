@@ -9,7 +9,7 @@ const fields = [
   ["CurrentYear", "Current year", "text", "2nd"],
   ["Roll", "Roll number", "text", "23CS8064"],
   ["Reg", "Registration number", "text", "23U10248"],
-  ["email", "Official email", "email", "name@nitdgp.ac.in"],
+  ["email", "Official email", "email", "name@jiscollege.ac.in"],
   ["password", "Password", "password", "Minimum 6 characters"],
 ]
 
@@ -19,7 +19,7 @@ function RegisterAdminPresentation({ handelUserInput, handelFormSubmit }) {
       <section className="auth-card auth-card--register">
         <div className="auth-card__intro">
           <div className="auth-logo">
-            <img src={logo} alt="NIT Durgapur" />
+            <img src={logo} alt="JIS College Of Engineering" />
           </div>
           <span className="eyebrow eyebrow--light">Campus Chronicles</span>
           <h1>Join the archive.</h1>

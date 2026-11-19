@@ -38,7 +38,7 @@ function Home() {
         <section className="home-hero">
           <div className="page-container home-hero__content">
             <div className="home-hero__copy">
-              <span className="eyebrow eyebrow--light">NIT Durgapur visual archive</span>
+              <span className="eyebrow eyebrow--light">JIS College Of Engineering visual archive</span>
               <h1>Every campus has stories. <em>Ours live here.</em></h1>
               <p>
                 A living album of places, people, departments, and events—collected by the campus community.
@@ -48,7 +48,7 @@ function Home() {
                   Explore the campus
                 </button>
                 <button type="button" className="button button--ghost-light" onClick={() => navigate("/aboutUs")}>
-                  About NIT Durgapur
+                  About JIS College Of Engineering
                 </button>
               </div>
             </div>
@@ -81,7 +81,7 @@ function Home() {
                 <img src={image.imageURL} alt={image.description || "Campus memory"} />
                 <figcaption className="feature-slide__caption">
                   <span>Campus chronicle</span>
-                  <p>{image.description || "A moment from NIT Durgapur"}</p>
+                  <p>{image.description || "A moment from JIS College Of Engineering"}</p>
                 </figcaption>
               </figure>
             )}

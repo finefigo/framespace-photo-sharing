@@ -1,42 +1,88 @@
 const bcrypt = require("bcrypt")
-const mongoose = require("mongoose")
+const crypto = require("crypto")
+const { query } = require("../config/database")
 
-const adminSchema = new mongoose.Schema({
-  firstName: { type: String, required: true, trim: true },
-  lastName: { type: String, required: true, trim: true },
-  role: { type: String, enum: ["ADMIN", "USER"], default: "ADMIN" },
-  year: { type: String, required: true, trim: true },
-  mobileNumber: {
-    type: String,
-    required: true,
-    unique: true,
-    trim: true,
-    match: [/^\d{10}$/, "Mobile number must contain 10 digits"],
-  },
-  rollNo: { type: String, required: true, trim: true },
-  regNo: { type: String, required: true, unique: true, trim: true, uppercase: true },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-    trim: true,
-    lowercase: true,
-    match: [/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Please provide a valid email address"],
-  },
-  password: { type: String, required: true, minlength: 6, select: false },
-}, {
-  timestamps: true,
-  toJSON: {
-    transform(document, returnedObject) {
-      delete returnedObject.password
-      return returnedObject
-    },
-  },
-})
+function formatAdmin(row, includePassword = false) {
+  if (!row) return null
+  const admin = {
+    ...row,
+    id: row.id,
+    _id: row.id,
+  }
+  if (!includePassword) {
+    delete admin.password
+  }
+  return admin
+}
 
-adminSchema.pre("save", async function hashPassword() {
-  if (!this.isModified("password")) return
-  this.password = await bcrypt.hash(this.password, 12)
-})
+async function findByReg(regNo, includePassword = false) {
+  if (!regNo) return null
+  const rows = await query(
+    "SELECT * FROM admin WHERE regNo = ? LIMIT 1",
+    [regNo.trim().toUpperCase()]
+  )
+  return formatAdmin(rows[0], includePassword)
+}
 
-module.exports = mongoose.models.Admin || mongoose.model("Admin", adminSchema)
+async function findById(id, includePassword = false) {
+  if (!id) return null
+  const rows = await query(
+    "SELECT * FROM admin WHERE id = ? LIMIT 1",
+    [id]
+  )
+  return formatAdmin(rows[0], includePassword)
+}
+
+const Admin = {
+  findOne(filter = {}) {
+    let includePassword = false
+    const exec = async () => {
+      if (filter.regNo) {
+        return findByReg(filter.regNo, includePassword)
+      }
+      if (filter.id || filter._id) {
+        return findById(filter.id || filter._id, includePassword)
+      }
+      return null
+    }
+
+    const promise = exec()
+    promise.select = function (fields) {
+      if (typeof fields === "string" && fields.includes("password")) {
+        includePassword = true
+      }
+      return exec()
+    }
+    return promise
+  },
+
+  async create(details) {
+    const id = crypto.randomUUID()
+    const firstName = details.firstName?.trim()
+    const lastName = details.lastName?.trim()
+    const role = details.role || "ADMIN"
+    const year = details.year?.trim()
+    const mobileNumber = details.mobileNumber?.trim()
+    const rollNo = details.rollNo?.trim()
+    const regNo = details.regNo?.trim().toUpperCase()
+    const email = details.email?.trim().toLowerCase()
+    const hashedPassword = await bcrypt.hash(details.password, 12)
+
+    await query(
+      `INSERT INTO admin (id, firstName, lastName, role, year, mobileNumber, rollNo, regNo, email, password, createdAt, updatedAt)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())`,
+      [id, firstName, lastName, role, year, mobileNumber, rollNo, regNo, email, hashedPassword]
+    )
+
+    return findById(id, false)
+  },
+
+  async findOneAndDelete(filter = {}) {
+    const admin = await this.findOne(filter)
+    if (!admin) return null
+    await query("DELETE FROM admin WHERE id = ?", [admin.id])
+    return admin
+  },
+}
+
+module.exports = Admin

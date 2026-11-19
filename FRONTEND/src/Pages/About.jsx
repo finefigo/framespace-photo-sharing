@@ -38,7 +38,7 @@ function AboutUs() {
           <div>
             <span className="eyebrow">About the institute</span>
             <h1>Built on learning, shaped by community.</h1>
-            <p>NIT Durgapur has grown from a regional engineering college into one of India&apos;s leading technical institutions.</p>
+            <p>JIS College Of Engineering has grown from a regional engineering college into one of India&apos;s leading technical institutions.</p>
           </div>
         </section>
         {status === "loading" && !managedSections.length ? (

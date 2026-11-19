@@ -1,9 +1,9 @@
-const mongoose = require("mongoose")
-const imageSchema = require("./imageFields")
+const { createGalleryModel } = require("./createGalleryModel")
 
-const departmentSchema = new mongoose.Schema({
-  departmentName: { type: String, required: true, unique: true, trim: true },
-  image: { type: [imageSchema], default: [] },
-}, { timestamps: true })
+const Department = createGalleryModel({
+  tableName: "department",
+  nameField: "departmentName",
+  isEvent: false,
+})
 
-module.exports = mongoose.models.Department || mongoose.model("Department", departmentSchema)
+module.exports = Department

@@ -8,7 +8,7 @@ function LoginPresentation({ handelUserInput, handelFormSubmit }) {
       <section className="auth-card">
         <div className="auth-card__intro">
           <div className="auth-logo">
-            <img src={logo} alt="NIT Durgapur" />
+            <img src={logo} alt="JIS College Of Engineering" />
           </div>
           <span className="eyebrow eyebrow--light">Archive administration</span>
           <h1>Welcome back.</h1>

@@ -4,9 +4,9 @@
 
 ```text
 src/
-  config/       Environment, MongoDB, and Cloudinary configuration
+  config/       Environment, MySQL, and Cloudinary configuration
   middleware/   Authentication, uploads, and error handling
-  models/       Mongoose schemas
+  models/       MySQL database models
   modules/
     admin/      Administrator account feature
     auth/       Login and logout feature
